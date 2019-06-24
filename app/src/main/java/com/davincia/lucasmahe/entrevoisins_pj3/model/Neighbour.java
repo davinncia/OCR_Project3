@@ -16,6 +16,7 @@ public class Neighbour {
     /** Avatar */
     private String avatarUrl;
 
+
     /**
      * Constructor
      * @param id
