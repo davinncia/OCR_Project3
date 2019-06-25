@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -48,12 +49,24 @@ public class NeighbourServiceTest {
     //TODO: getSpecificNeighbours, addToFav, RemoveFromFav, getFavoritesNeighbours
 
     @Test
-    public void addNeighbourToFavorites() {
-        Neighbour neighbourToDelete = service.getNeighbours().get(0);
+    public void getSpecificNeighbours() {
+        Neighbour neighbourToGet = service.getNeighbours().get(0);
 
-        service.deleteNeighbour(neighbourToDelete);
+        Neighbour neighbourGot = service.getSpecificNeighbour(1);
 
-        assertTrue(service.getNeighbours().contains(neighbourToDelete));
+        assertTrue(neighbourGot.equals(neighbourToGet));
+    }
+
+    @Test
+    public void getFavoritesNeighbours(){
+        //Creating false favorite ids (can't access SharedPreferences here)
+        List<Integer> ids = new ArrayList<>();
+        ids.add(1);
+        ids.add(3);
+
+        List<Neighbour> favorites = service.getFavoriteNeighbours(ids);
+
+        assertTrue(favorites.get(0).getName().equals("Caroline"));
     }
 }
 
