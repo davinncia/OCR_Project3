@@ -14,18 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.repository.NeighbourRepository;
 import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
 import com.davincia.lucasmahe.entrevoisins_pj3.utils.ItemClickSupport;
 import com.davincia.lucasmahe.entrevoisins_pj3.utils.SharedPreferencesFormat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -104,7 +100,7 @@ public class FavoritesFragment extends Fragment {
 
     private void initRecyclerView(){
         //Generate the favorite neighbour list
-        mNeighbours = new NeighbourRepository(mApiService).getFavoriteNeighbours(favoriteIds);
+        mNeighbours = mApiService.getFavoriteNeighbours(favoriteIds);
 
         //Display it in recyclerView
         mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);

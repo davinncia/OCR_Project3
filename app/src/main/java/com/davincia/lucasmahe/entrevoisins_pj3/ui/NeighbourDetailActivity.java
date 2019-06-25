@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.repository.NeighbourRepository;
 import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
 import com.davincia.lucasmahe.entrevoisins_pj3.utils.SharedPreferencesFormat;
 
@@ -64,14 +63,15 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             initUi();
         }
     }
-    
+
     /**
      *
      * @param id of the neighbour clicked on
      * @return the corresponding Neighbour object by finding its name in the list
      */
     private Neighbour getNeighbour(Integer id){
-        return new NeighbourRepository(mApiService).getSpecificNeighbour(id);
+
+        return mApiService.getSpecificNeighbour(id);
     }
 
     ////////////////////////////////////
