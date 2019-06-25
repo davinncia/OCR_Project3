@@ -22,7 +22,7 @@ public class SharedPreferencesFormat {
     public static ArrayList<Integer> getPreferencesToArrayList(String preferences){
         ArrayList<Integer> favorites = new ArrayList<>();
 
-        if (preferences == null){
+        if (preferences == null || preferences.equals("")){
             return favorites;
         }
 

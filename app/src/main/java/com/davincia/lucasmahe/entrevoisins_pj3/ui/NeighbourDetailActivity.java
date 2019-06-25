@@ -24,7 +24,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPrefs;
 
-    private String mNeighbourName;
+    private Integer mId;
     private Neighbour mNeighbour;
     private NeighbourApiService mApiService;
 
@@ -45,12 +45,10 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
         mFavoriteFab.setOnClickListener(fabListener);
 
-        mNeighbourName = getIntent().getStringExtra("NAME");
-        titleView.setText(mNeighbourName);
-        titleView.setTextColor(Color.WHITE);
+        mId = getIntent().getIntExtra("ID", 0);
 
         //Get the corresponding user
-        mNeighbour = getNeighbour(mNeighbourName);
+        mNeighbour = getNeighbour(mId);
 
         //Initializing favorites from preferences
         sharedPrefs = this.getSharedPreferences(getString(R.string.SHARED_PREF_FAVORITES), MODE_PRIVATE);
@@ -64,11 +62,11 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
     /**
      *
-     * @param name of the neighbour clicked on
+     * @param id of the neighbour clicked on
      * @return the corresponding Neighbour object by finding its name in the list
      */
-    private Neighbour getNeighbour(String name){
-        return new NeighbourRepository(mApiService).getSpecificNeighbour(name);
+    private Neighbour getNeighbour(Integer id){
+        return new NeighbourRepository(mApiService).getSpecificNeighbour(id);
     }
 
     ////////////////////////////////////
@@ -88,6 +86,8 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             mFavoriteFab.setImageResource(R.drawable.ic_star_empty);
         }
 
+        titleView.setText(mNeighbour.getName());
+        titleView.setTextColor(Color.WHITE);
         nameView.setText(mNeighbour.getName());
         //The urls provided in the project seem to be failing...
         Glide.with(this).load("https://api.adorable.io/AVATARS/512/2.png").into(avatarView);

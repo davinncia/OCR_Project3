@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
 
+    private final int PAGE_NUMBER = 2;
+
     public ListNeighbourPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -17,7 +19,13 @@ public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-        return NeighbourFragment.newInstance();
+
+        //TODO: is this good practice ? Shouldn't we check if fragment already created ?
+        if(position == 0) {
+            return NeighbourFragment.newInstance();
+        } else {
+            return FavoritesFragment.newInstance();
+        }
     }
 
     /**
@@ -26,6 +34,6 @@ public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public int getCount() {
-        return 1;
+        return PAGE_NUMBER;
     }
 }
