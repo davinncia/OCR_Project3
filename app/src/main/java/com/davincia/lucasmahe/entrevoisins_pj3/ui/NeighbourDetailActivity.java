@@ -2,10 +2,11 @@ package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,17 +34,21 @@ public class NeighbourDetailActivity extends AppCompatActivity {
     //UI
     private TextView titleView;
     private FloatingActionButton mFavoriteFab;
+    private android.support.v7.widget.Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_neighbour_detail);
+
         mApiService = DI.getNeighbourApiService();
 
         titleView = findViewById(R.id.textView_detail_title);
         mFavoriteFab = findViewById(R.id.fab_favorite);
+        ImageButton backArrow = findViewById(R.id.image_details_back_arrow);
 
         mFavoriteFab.setOnClickListener(fabListener);
+        backArrow.setOnClickListener(backListener);
 
         mId = getIntent().getIntExtra("ID", 0);
 
@@ -59,7 +64,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             initUi();
         }
     }
-
+    
     /**
      *
      * @param id of the neighbour clicked on
@@ -97,6 +102,9 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         descriptionView.setText("Personal description");
     }
 
+    ////////////////////////////////////
+    ///////////////CLICKS///////////////
+    ////////////////////////////////////
     View.OnClickListener fabListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -116,6 +124,13 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             sharedPrefs.edit().putString(getString(R.string.shared_pref_key), preferences).apply();
 
             Toast.makeText(NeighbourDetailActivity.this, preferences, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    View.OnClickListener backListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
         }
     };
 

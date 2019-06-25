@@ -6,6 +6,7 @@ import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: this code is not supposed to be in repository, but where ??? ApiService ??
 public class NeighbourRepository {
 
     private final NeighbourApiService apiService;
