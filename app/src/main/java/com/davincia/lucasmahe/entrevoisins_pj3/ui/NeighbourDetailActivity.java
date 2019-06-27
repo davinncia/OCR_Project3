@@ -95,7 +95,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         titleView.setTextColor(Color.WHITE);
         nameView.setText(mNeighbour.getName());
         //The urls provided in the project seem to be failing...
-        Glide.with(this).load("https://api.adorable.io/AVATARS/512/2.png").into(avatarView);
+        Glide.with(this).load(mNeighbour.getAvatarUrl()).into(avatarView);
         addressView.setText("Here the personal address");
         phoneView.setText("00.00.00.00.00.00");
         networkView.setText("Here social network infos");
