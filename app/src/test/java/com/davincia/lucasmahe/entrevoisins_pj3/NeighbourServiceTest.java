@@ -32,6 +32,7 @@ public class NeighbourServiceTest {
         service = DI.getNewInstanceApiService();
     }
 
+    //TODO: why not using Repository like in Pj 2 ?
     @Test
     public void getNeighboursWithSuccess() {
         List<Neighbour> neighbours = service.getNeighbours();
@@ -45,8 +46,6 @@ public class NeighbourServiceTest {
         service.deleteNeighbour(neighbourToDelete);
         assertFalse(service.getNeighbours().contains(neighbourToDelete));
     }
-
-    //TODO: getSpecificNeighbours, addToFav, RemoveFromFav, getFavoritesNeighbours
 
     @Test
     public void getSpecificNeighbours() {
