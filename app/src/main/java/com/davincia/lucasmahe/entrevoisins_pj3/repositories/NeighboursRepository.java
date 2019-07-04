@@ -1,17 +1,22 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.repositories;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
+import com.davincia.lucasmahe.entrevoisins_pj3.data.service.NeighbourApiService;
+import com.davincia.lucasmahe.entrevoisins_pj3.data.preferences.FavoritesSharedPreferences;
 
 import java.util.List;
 
 public class NeighboursRepository {
 
     private static NeighboursRepository instance;
+
     private NeighbourApiService mApiService;
+    private FavoritesSharedPreferences mFavoritesPrefs;
 
     //singleton pattern
     public static NeighboursRepository getInstance(){
@@ -44,4 +49,21 @@ public class NeighboursRepository {
     public void deleteNeighbour(Neighbour neighbour){
         mApiService.deleteNeighbour(neighbour);
     }
+
+
+    public List<Integer> getFavoriteIds(Context context){
+        mFavoritesPrefs = DI.getFavoritesSharedPrefs();
+        return mFavoritesPrefs.getFavoriteIds(context);
+    }
+
+    public List<Neighbour> getFavoriteNeighbours(List<Integer> ids){
+
+        return mApiService.getFavoriteNeighbours(ids);
+    }
+
+    public void saveFavorites(List<Integer> ids, Context context){
+
+        mFavoritesPrefs.insertFavorites(ids, context);
+    }
+
 }

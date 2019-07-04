@@ -1,9 +1,6 @@
-package com.davincia.lucasmahe.entrevoisins_pj3.service;
+package com.davincia.lucasmahe.entrevoisins_pj3.data.service;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 

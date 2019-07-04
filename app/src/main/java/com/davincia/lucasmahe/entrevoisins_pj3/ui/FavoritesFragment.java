@@ -2,33 +2,31 @@ package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
-import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
+import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
 import com.davincia.lucasmahe.entrevoisins_pj3.utils.ItemClickSupport;
-import com.davincia.lucasmahe.entrevoisins_pj3.utils.SharedPreferencesFormat;
 
 import java.util.List;
 
 
 public class FavoritesFragment extends Fragment {
 
-    private SharedPreferences sharedPref;
-    private NeighbourApiService mApiService;
+
+    private NeighboursRepository mRepo;
 
     private List<Integer> favoriteIds;
     private List<Neighbour> mNeighbours;
@@ -54,8 +52,9 @@ public class FavoritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mApiService = DI.getNeighbourApiService();
-        fetchFavoriteIds();
+        mRepo = NeighboursRepository.getInstance();
+
+        favoriteIds = mRepo.getFavoriteIds(getContext());
 
     }
 
@@ -63,8 +62,7 @@ public class FavoritesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Log.d("debuglog", "top");
-        fetchFavoriteIds();
+        favoriteIds = mRepo.getFavoriteIds(getContext());
         initRecyclerView();
     }
 
@@ -82,7 +80,6 @@ public class FavoritesFragment extends Fragment {
 
         initRecyclerView();
 
-        //configureOnClickRecyclerView();
         return view;
 
     }
@@ -93,16 +90,9 @@ public class FavoritesFragment extends Fragment {
 
     }
 
-    //TODO: should this method be placed in its own repository ?
-    private void fetchFavoriteIds(){
-        //Initializing favorites from preferences
-        sharedPref = getContext().getSharedPreferences(getString(R.string.SHARED_PREF_FAVORITES), Context.MODE_PRIVATE);
-        favoriteIds = SharedPreferencesFormat.getPreferencesToArrayList(sharedPref.getString(getString(R.string.shared_pref_key), null));
-    }
-
     private void initRecyclerView(){
         //Generate the favorite neighbour list
-        mNeighbours = mApiService.getFavoriteNeighbours(favoriteIds);
+        mNeighbours = mRepo.getFavoriteNeighbours(favoriteIds);
 
         //Display it in recyclerView
         mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
@@ -121,9 +111,7 @@ public class FavoritesFragment extends Fragment {
                         Integer id = mAdapter.getNeighbour(position).getId();
 
                         //Start detail activity
-                        Intent detailsIntent = new Intent(getContext(), NeighbourDetailActivity.class);
-                        detailsIntent.putExtra("ID", id);
-                        startActivity(detailsIntent);
+                        startActivity(NeighbourDetailActivity.navigate(getContext(), id));
                     }
                 });
     }

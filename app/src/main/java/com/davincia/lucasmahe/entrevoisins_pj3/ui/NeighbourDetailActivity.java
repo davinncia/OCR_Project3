@@ -2,27 +2,23 @@ package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bumptech.glide.Glide;
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
-import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
-import com.davincia.lucasmahe.entrevoisins_pj3.utils.SharedPreferencesFormat;
+import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
+import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -30,12 +26,11 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
     private static final String INTENT_ID = "INTENT_ID";
 
-    private SharedPreferences sharedPrefs;
+    private NeighboursRepository mRepo;
 
     private Integer mId;
     private Neighbour mNeighbour;
 
-    private NeighbourApiService mApiService;
     private NeighboursViewModel neighboursViewModel;
 
     private ArrayList<Integer> favorites = new ArrayList<>();
@@ -56,8 +51,6 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_neighbour_detail);
 
-        //mApiService = DI.getNeighbourApiService();
-
         titleView = findViewById(R.id.textView_detail_title);
         mFavoriteFab = findViewById(R.id.fab_favorite);
         ImageButton backArrow = findViewById(R.id.image_details_back_arrow);
@@ -70,9 +63,8 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         //Get the corresponding user
         mNeighbour = getNeighbour(mId);
 
-        //Initializing favorites from preferences
-        sharedPrefs = this.getSharedPreferences(getString(R.string.SHARED_PREF_FAVORITES), MODE_PRIVATE);
-        favorites = SharedPreferencesFormat.getPreferencesToArrayList(sharedPrefs.getString(getString(R.string.shared_pref_key), null));
+        //Getting an instance of our repository to access SharedPreferences
+        mRepo = NeighboursRepository.getInstance();
 
         //UI
         if (mNeighbour != null) {
@@ -115,7 +107,6 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         titleView.setText(mNeighbour.getName());
         titleView.setTextColor(Color.WHITE);
         nameView.setText(mNeighbour.getName());
-        //The urls provided in the project seem to be failing...
         Glide.with(this).load(mNeighbour.getAvatarUrl()).into(avatarView);
         addressView.setText("Here the personal address");
         phoneView.setText("00.00.00.00.00.00");
@@ -141,10 +132,9 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             }
 
             //Save IDs of favorites in preferences
-            String preferences = SharedPreferencesFormat.prerareDataForPreferences(favorites);
-            sharedPrefs.edit().putString(getString(R.string.shared_pref_key), preferences).apply();
+            mRepo.saveFavorites(favorites, getApplicationContext());
 
-            Toast.makeText(NeighbourDetailActivity.this, preferences, Toast.LENGTH_SHORT).show();
+            Toast.makeText(NeighbourDetailActivity.this, "Favorites modified", Toast.LENGTH_SHORT).show();
         }
     };
 
