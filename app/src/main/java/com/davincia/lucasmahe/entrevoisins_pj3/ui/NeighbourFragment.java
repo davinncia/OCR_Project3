@@ -1,34 +1,38 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
-import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.events.DeleteNeighbourEvent;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
 import com.davincia.lucasmahe.entrevoisins_pj3.utils.ItemClickSupport;
+import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NeighbourFragment extends Fragment {
 
-    private NeighbourApiService mApiService;
-    private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
     private MyNeighbourRecyclerViewAdapter mAdapter;
+
+    private NeighboursViewModel mNeighboursViewModel;
+
+    private List<Neighbour> mNeighbours;
 
 
     /**
@@ -43,8 +47,19 @@ public class NeighbourFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApiService = DI.getNeighbourApiService();
+
+        mNeighbours = new ArrayList<>();
+
+        mNeighboursViewModel = ViewModelProviders.of(this).get(NeighboursViewModel.class);
+        mNeighboursViewModel.init();
+
+        mNeighboursViewModel.getNeighbours().observe(this, neighbours -> {
+
+            Log.d("debuglog", "onchange...");
+            //mAdapter.notifyDataSetChanged();
+        });
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,18 +69,13 @@ public class NeighbourFragment extends Fragment {
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        initList();
-        configureOnClickRecyclerView();
-        return view;
-    }
 
-    /**
-     * Init the List of neighbours
-     */
-    private void initList() {
-        mNeighbours = mApiService.getNeighbours();
-        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
+        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighboursViewModel.getNeighbours().getValue());
         mRecyclerView.setAdapter(mAdapter);
+
+        configureOnClickRecyclerView();
+
+        return view;
     }
 
     @Override
@@ -86,26 +96,29 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
-        mApiService.deleteNeighbour(event.neighbour);
-        initList();
+
+        mNeighboursViewModel.deleteNeighbour(event.neighbour);
+
+        //TODO:Shouldn't this be done automatically ?
+        mAdapter.notifyDataSetChanged();
+
+        //TODO: Alerting our view model changes have been made to launch the observer
+        //mNeighbours = mNeighboursViewModel.getNeighbours().getValue();
     }
 
     /**
      * Handles click on recyclerView's items
      */
-    private void configureOnClickRecyclerView(){
-        ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_item)
-                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+   private void configureOnClickRecyclerView(){
+       ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_item)
+               .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                   @Override
+                   public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                       Integer id = mAdapter.getNeighbour(position).getId();
+                       //Start detail activity
+                       startActivity(NeighbourDetailActivity.navigate(getContext(), id));
+                   }
+               });
+   }
 
-                        Integer id = mAdapter.getNeighbour(position).getId();
-
-                        //Start detail activity
-                        Intent detailsIntent = new Intent(getContext(), NeighbourDetailActivity.class);
-                        detailsIntent.putExtra("ID", id);
-                        startActivity(detailsIntent);
-                    }
-                });
-    }
 }

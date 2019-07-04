@@ -1,9 +1,9 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.neighbour_list;
 
-import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.ui.ListNeighbourActivity;
@@ -14,11 +14,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
-import static android.support.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
+import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.davincia.lucasmahe.entrevoisins_pj3.utlis.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.core.IsNull.notNullValue;
 
@@ -61,7 +61,7 @@ public class NeighboursListTest {
      */
     @Test
     public void myNeighboursList_deleteAction_shouldRemoveItem() {
-        //TODO: Same ERROR AmbiguousViewMatcherException...
+        //Same ERROR AmbiguousViewMatcherException...
         // Given : We remove the element at position 2
         onView(withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT));
         // When perform a click on a delete icon
@@ -70,4 +70,21 @@ public class NeighboursListTest {
         // Then : the number of element is 11
         onView(withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT-1));
     }
+
+    /**
+     * When we click on item, correct detail activity is launched
+     */
+    @Test
+    public void myNeighbourList_clickOnItem_opensDetailActivity(){
+        //Given : we click on item in neighbourList
+        onView(withId(R.id.list_neighbours)).perform();
+    }
+
+//
+//  ○ test vérifiant qu’au démarrage de ce nouvel écran, le TextView indiquant
+//    le nom de l’utilisateur en question est bien rempli ;
+//  ○ test vérifiant qu’au clic sur le bouton de suppression, la liste d’utilisateurs
+//    compte bien un utilisateur en moins ;
+//  ○ test vérifianque l’onglet Favoris n’affiche que les voisins marqués comme
+//    favoris.
 }

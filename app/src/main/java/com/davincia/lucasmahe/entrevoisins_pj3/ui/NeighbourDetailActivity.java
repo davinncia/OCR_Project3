@@ -1,10 +1,16 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+
+import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,25 +28,35 @@ import java.util.ArrayList;
 
 public class NeighbourDetailActivity extends AppCompatActivity {
 
+    private static final String INTENT_ID = "INTENT_ID";
+
     private SharedPreferences sharedPrefs;
 
     private Integer mId;
     private Neighbour mNeighbour;
+
     private NeighbourApiService mApiService;
+    private NeighboursViewModel neighboursViewModel;
 
     private ArrayList<Integer> favorites = new ArrayList<>();
 
     //UI
     private TextView titleView;
     private FloatingActionButton mFavoriteFab;
-    private android.support.v7.widget.Toolbar toolbar;
+    private androidx.appcompat.widget.Toolbar toolbar;
+
+    public static Intent navigate(Context context, int id){
+        Intent detailsIntent = new Intent(context, NeighbourDetailActivity.class);
+        detailsIntent.putExtra(INTENT_ID, id);
+        return detailsIntent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_neighbour_detail);
 
-        mApiService = DI.getNeighbourApiService();
+        //mApiService = DI.getNeighbourApiService();
 
         titleView = findViewById(R.id.textView_detail_title);
         mFavoriteFab = findViewById(R.id.fab_favorite);
@@ -49,7 +65,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         mFavoriteFab.setOnClickListener(fabListener);
         backArrow.setOnClickListener(backListener);
 
-        mId = getIntent().getIntExtra("ID", 0);
+        mId = getIntent().getIntExtra(INTENT_ID, 0);
 
         //Get the corresponding user
         mNeighbour = getNeighbour(mId);
@@ -71,7 +87,12 @@ public class NeighbourDetailActivity extends AppCompatActivity {
      */
     private Neighbour getNeighbour(Integer id){
 
-        return mApiService.getSpecificNeighbour(id);
+        //return mApiService.getSpecificNeighbour(id);
+        neighboursViewModel = ViewModelProviders.of(this).get(NeighboursViewModel.class);
+        neighboursViewModel.init();
+
+        //TODO: setting an observer doesn't seem necessary as neighbour stays fix
+        return neighboursViewModel.getSpecificNeighbour(id).getValue();
     }
 
     ////////////////////////////////////

@@ -1,5 +1,8 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.service;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 
 import java.util.ArrayList;

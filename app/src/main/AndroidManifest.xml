@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
 
         android:usesCleartextTraffic="true">
-        <!-- TODO: I had to add this line so that avatar could be loaded -->
+        <!-- I had to add this line so that avatar could be loaded -->
 
         <activity
             android:name=".ui.ListNeighbourActivity"

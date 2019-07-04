@@ -1,8 +1,8 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
 
@@ -20,7 +20,6 @@ public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        //TODO: is this good practice ? Shouldn't we check if fragment already created ?
         if(position == 0) {
             return NeighbourFragment.newInstance();
         } else {

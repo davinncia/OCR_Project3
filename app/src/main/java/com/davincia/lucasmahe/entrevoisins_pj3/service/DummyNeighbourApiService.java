@@ -1,5 +1,10 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.service;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 
 import java.util.ArrayList;
@@ -29,12 +34,14 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
         neighbours.remove(neighbour);
     }
 
-    //TODO: is here the right place ?
+
     /**
      * {@inheritDoc}
      */
+
     @Override
-    public Neighbour getSpecificNeighbour(Integer id) {
+    @NonNull
+    public Neighbour getSpecificNeighbour(int id) {
 
         //Look for the position of the neighbour in list with id
         for (Neighbour neighbour : neighbours){
@@ -42,7 +49,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
                 return neighbour;
             }
         }
-        return null;
+        throw new IllegalStateException("Incoherent state, no user found for id: " + id);
     }
 
     /**

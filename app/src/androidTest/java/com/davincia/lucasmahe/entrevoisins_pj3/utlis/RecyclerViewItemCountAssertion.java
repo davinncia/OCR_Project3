@@ -1,8 +1,8 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.utlis;
 
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
-import android.support.v7.widget.RecyclerView;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.ViewAssertion;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import org.hamcrest.Matcher;

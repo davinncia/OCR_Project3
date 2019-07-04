@@ -1,7 +1,7 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.utlis;
 
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 import android.view.View;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.R;

@@ -1,5 +1,7 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.service;
 
+import androidx.lifecycle.LiveData;
+
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 
 import java.util.List;
@@ -21,12 +23,11 @@ public interface NeighbourApiService {
      */
     void deleteNeighbour(Neighbour neighbour);
 
-    //TODO: is here the right place ?
     /**
      * Get a Neighbour given its id
      * @param id
      */
-    Neighbour getSpecificNeighbour(Integer id);
+    Neighbour getSpecificNeighbour(int id);
 
     /**
      * Get the list of favorites neighbours given their ids
