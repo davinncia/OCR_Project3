@@ -1,6 +1,7 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,13 +51,15 @@ public class NeighbourFragment extends Fragment {
 
         mNeighbours = new ArrayList<>();
 
+        mAdapter = new MyNeighbourRecyclerViewAdapter();
+
         mNeighboursViewModel = ViewModelProviders.of(this).get(NeighboursViewModel.class);
         mNeighboursViewModel.init();
 
-        mNeighboursViewModel.getNeighbours().observe(this, neighbours -> {
+        mNeighboursViewModel.neighbours.observe(this, neighbours -> {
 
-            Log.d("debuglog", "onchange...");
-            //mAdapter.notifyDataSetChanged();
+            mAdapter.setData(neighbours);
+
         });
     }
 
@@ -65,12 +68,11 @@ public class NeighbourFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_neighbour_list, container, false);
-        Context context = view.getContext();
-        mRecyclerView = (RecyclerView) view;
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
-        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighboursViewModel.getNeighbours().getValue());
+        mRecyclerView = (RecyclerView) view;
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+
         mRecyclerView.setAdapter(mAdapter);
 
         configureOnClickRecyclerView();
@@ -102,7 +104,7 @@ public class NeighbourFragment extends Fragment {
         //TODO:Shouldn't this be done automatically ?
         mAdapter.notifyDataSetChanged();
 
-        //TODO: Alerting our view model changes have been made to launch the observer
+        //Alerting our view model changes have been made to launch the observer
         //mNeighbours = mNeighboursViewModel.getNeighbours().getValue();
     }
 
@@ -114,9 +116,9 @@ public class NeighbourFragment extends Fragment {
                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                    @Override
                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                       Integer id = mAdapter.getNeighbour(position).getId();
+                       Neighbour neighbour = mAdapter.getNeighbour(position);
                        //Start detail activity
-                       startActivity(NeighbourDetailActivity.navigate(getContext(), id));
+                       startActivity(NeighbourDetailActivity.navigate(getContext(), neighbour));
                    }
                });
    }

@@ -11,33 +11,29 @@ import java.util.List;
 
 public class NeighboursViewModel extends ViewModel {
 
-    private MutableLiveData<List<Neighbour>> mNeighbours;
-    private MutableLiveData<Neighbour> mSpecificNeighbour;
+    private MutableLiveData<List<Neighbour>> mNeighbours = new MutableLiveData<>();
+    public LiveData<List<Neighbour>> neighbours = mNeighbours;
+
+    private MutableLiveData<Neighbour> mSpecificNeighbour = new MutableLiveData<>();
+    public LiveData<Neighbour> specificNeighbour = mSpecificNeighbour;
+
     private NeighboursRepository mRepo;
 
     public void init(){
-        if (mNeighbours != null){
-            return;
-        }
         mRepo = NeighboursRepository.getInstance();
-        mNeighbours = mRepo.getNeighbours();
+        getNeighbours();
     }
 
-    public LiveData<List<Neighbour>> getNeighbours(){
+    public void getNeighbours(){
 
-        //Set value triggers the observer !!!
-        mNeighbours.setValue(mRepo.getNeighbours().getValue());
-        return mNeighbours;
-
+        //Set value triggers the observer
+        mNeighbours.setValue(mRepo.getNeighbours());
     }
 
-    public LiveData<Neighbour> getSpecificNeighbour(int id){
+    public void getSpecificNeighbour(int id){
 
-        if (mSpecificNeighbour == null){
-            mSpecificNeighbour = new MutableLiveData<>();
-        }
         mSpecificNeighbour.setValue(mRepo.getSpecificNeighbour(id));
-        return mSpecificNeighbour;
+
     }
 
     public void deleteNeighbour(Neighbour neighbour){

@@ -25,9 +25,6 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
 
     private List<Neighbour> mNeighbours;
 
-    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
-        mNeighbours = items;
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,7 +53,12 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
 
     @Override
     public int getItemCount() {
-        return mNeighbours.size();
+        return mNeighbours != null? mNeighbours.size() : 0;
+    }
+
+    public void setData(List<Neighbour> neighbours){
+        mNeighbours = neighbours;
+        notifyDataSetChanged();
     }
 
     public Neighbour getNeighbour(int position){

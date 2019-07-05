@@ -15,6 +15,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -53,11 +54,11 @@ public class NeighbourServiceTest {
 
         Neighbour neighbourGot = service.getSpecificNeighbour(1);
 
-        assertTrue(neighbourGot.equals(neighbourToGet));
+        assertEquals(neighbourGot, neighbourToGet);
     }
 
     @Test
-    public void getFavoritesNeighbours(){
+    public void getFavoritesNeighboursWithIds(){
         //Creating false favorite ids (can't access SharedPreferences here)
         List<Integer> ids = new ArrayList<>();
         ids.add(1);
@@ -65,7 +66,8 @@ public class NeighbourServiceTest {
 
         List<Neighbour> favorites = service.getFavoriteNeighbours(ids);
 
-        assertTrue(favorites.get(0).getName().equals("Caroline"));
+        assertEquals("Caroline", favorites.get(0).getName());
+        assertEquals(ids.size(), favorites.size());
     }
 }
 

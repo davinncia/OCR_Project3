@@ -1,11 +1,14 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
 /**
  * Model object representing a Neighbour
  */
-public class Neighbour {
+public class Neighbour implements Parcelable {
 
     /** Identifier */
     private Integer id;
@@ -65,4 +68,34 @@ public class Neighbour {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.avatarUrl);
+    }
+
+    protected Neighbour(Parcel in) {
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.name = in.readString();
+        this.avatarUrl = in.readString();
+    }
+
+    public static final Parcelable.Creator<Neighbour> CREATOR = new Parcelable.Creator<Neighbour>() {
+        @Override
+        public Neighbour createFromParcel(Parcel source) {
+            return new Neighbour(source);
+        }
+
+        @Override
+        public Neighbour[] newArray(int size) {
+            return new Neighbour[size];
+        }
+    };
 }

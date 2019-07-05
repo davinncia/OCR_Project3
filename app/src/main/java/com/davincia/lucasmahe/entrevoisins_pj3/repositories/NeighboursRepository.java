@@ -15,8 +15,12 @@ public class NeighboursRepository {
 
     private static NeighboursRepository instance;
 
-    private NeighbourApiService mApiService;
     private FavoritesSharedPreferences mFavoritesPrefs;
+    private NeighbourApiService __neighboursApiService;
+
+    private NeighboursRepository(){
+        //No constructor allowed
+    }
 
     //singleton pattern
     public static NeighboursRepository getInstance(){
@@ -26,28 +30,29 @@ public class NeighboursRepository {
         return instance;
     }
 
+    private NeighbourApiService getNeighboursApiService(){
+        if (__neighboursApiService == null){
+            __neighboursApiService = DI.getNeighbourApiService();
+        }
+        return __neighboursApiService;
+    }
+
     //TODO: Should we use LiveData from here ? before or just in viewmodel ?
     //Retrieving data form service
-    public MutableLiveData<List<Neighbour>> getNeighbours(){
+    public List<Neighbour> getNeighbours(){
         //inject our api service
-        mApiService = DI.getNeighbourApiService();
 
-        //return a LiveData object
-        MutableLiveData<List<Neighbour>> data = new MutableLiveData<>();
-        data.setValue(mApiService.getNeighbours());
-
-        return data;
+        return getNeighboursApiService().getNeighbours();
     }
 
     //Retrieving a neighbour from its id
     public Neighbour getSpecificNeighbour(int id){
         //inject our api service
-        mApiService = DI.getNeighbourApiService();
-        return mApiService.getSpecificNeighbour(id);
+        return getNeighboursApiService().getSpecificNeighbour(id);
     }
 
     public void deleteNeighbour(Neighbour neighbour){
-        mApiService.deleteNeighbour(neighbour);
+        getNeighboursApiService().deleteNeighbour(neighbour);
     }
 
 
@@ -58,7 +63,7 @@ public class NeighboursRepository {
 
     public List<Neighbour> getFavoriteNeighbours(List<Integer> ids){
 
-        return mApiService.getFavoriteNeighbours(ids);
+        return getNeighboursApiService().getFavoriteNeighbours(ids);
     }
 
     public void saveFavorites(List<Integer> ids, Context context){

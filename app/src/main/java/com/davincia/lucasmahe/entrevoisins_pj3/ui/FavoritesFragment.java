@@ -95,7 +95,7 @@ public class FavoritesFragment extends Fragment {
         mNeighbours = mRepo.getFavoriteNeighbours(favoriteIds);
 
         //Display it in recyclerView
-        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
+        mAdapter = new MyNeighbourRecyclerViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
     }
 

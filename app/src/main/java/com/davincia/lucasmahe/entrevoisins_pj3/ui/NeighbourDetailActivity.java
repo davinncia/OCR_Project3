@@ -21,10 +21,12 @@ import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NeighbourDetailActivity extends AppCompatActivity {
 
     private static final String INTENT_ID = "INTENT_ID";
+    public static final String KEY_NEIGHBOUR = "KEY_NEIGHBOUR";
 
     private NeighboursRepository mRepo;
 
@@ -33,16 +35,17 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
     private NeighboursViewModel neighboursViewModel;
 
-    private ArrayList<Integer> favorites = new ArrayList<>();
+    private List<Integer> favorites = new ArrayList<>();
+
 
     //UI
     private TextView titleView;
     private FloatingActionButton mFavoriteFab;
     private androidx.appcompat.widget.Toolbar toolbar;
 
-    public static Intent navigate(Context context, int id){
+    public static Intent navigate(Context context, Neighbour neighbour){
         Intent detailsIntent = new Intent(context, NeighbourDetailActivity.class);
-        detailsIntent.putExtra(INTENT_ID, id);
+        detailsIntent.putExtra(KEY_NEIGHBOUR, neighbour);
         return detailsIntent;
     }
 
@@ -58,13 +61,14 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         mFavoriteFab.setOnClickListener(fabListener);
         backArrow.setOnClickListener(backListener);
 
-        mId = getIntent().getIntExtra(INTENT_ID, 0);
+        mNeighbour = getIntent().getParcelableExtra(KEY_NEIGHBOUR);
 
-        //Get the corresponding user
-        mNeighbour = getNeighbour(mId);
 
         //Getting an instance of our repository to access SharedPreferences
         mRepo = NeighboursRepository.getInstance();
+
+        //Get favorites
+        favorites = mRepo.getFavoriteIds(getApplicationContext());
 
         //UI
         if (mNeighbour != null) {
