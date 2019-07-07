@@ -11,13 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
-import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -30,10 +28,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
     private NeighboursRepository mRepo;
 
-    private Integer mId;
     private Neighbour mNeighbour;
-
-    private NeighboursViewModel neighboursViewModel;
 
     private List<Integer> favorites = new ArrayList<>();
 
@@ -63,7 +58,6 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
         mNeighbour = getIntent().getParcelableExtra(KEY_NEIGHBOUR);
 
-
         //Getting an instance of our repository to access SharedPreferences
         mRepo = NeighboursRepository.getInstance();
 
@@ -76,20 +70,6 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     *
-     * @param id of the neighbour clicked on
-     * @return the corresponding Neighbour object by finding its name in the list
-     */
-    private Neighbour getNeighbour(Integer id){
-
-        //return mApiService.getSpecificNeighbour(id);
-        neighboursViewModel = ViewModelProviders.of(this).get(NeighboursViewModel.class);
-        neighboursViewModel.init();
-
-        //TODO: setting an observer doesn't seem necessary as neighbour stays fix
-        return neighboursViewModel.getSpecificNeighbour(id).getValue();
-    }
 
     ////////////////////////////////////
     ////////////////UI//////////////////
@@ -148,6 +128,5 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             finish();
         }
     };
-
 }
 

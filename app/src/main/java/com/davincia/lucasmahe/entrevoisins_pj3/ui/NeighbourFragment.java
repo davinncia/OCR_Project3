@@ -55,7 +55,6 @@ public class NeighbourFragment extends Fragment {
 
         mNeighboursViewModel = ViewModelProviders.of(this).get(NeighboursViewModel.class);
         mNeighboursViewModel.init();
-
         mNeighboursViewModel.neighbours.observe(this, neighbours -> {
 
             mAdapter.setData(neighbours);
@@ -101,11 +100,11 @@ public class NeighbourFragment extends Fragment {
 
         mNeighboursViewModel.deleteNeighbour(event.neighbour);
 
-        //TODO:Shouldn't this be done automatically ?
-        mAdapter.notifyDataSetChanged();
+        //TODO: good way ? necessary to trigger observer...
+        mNeighboursViewModel.getNeighbours();
+        //TODO: delete from favorites...
 
-        //Alerting our view model changes have been made to launch the observer
-        //mNeighbours = mNeighboursViewModel.getNeighbours().getValue();
+
     }
 
     /**

@@ -14,10 +14,15 @@ public class NeighboursViewModel extends ViewModel {
     private MutableLiveData<List<Neighbour>> mNeighbours = new MutableLiveData<>();
     public LiveData<List<Neighbour>> neighbours = mNeighbours;
 
+    private MutableLiveData<List<Neighbour>> mFavoriteNeighbours = new MutableLiveData<>();
+    public LiveData<List<Neighbour>> favorites = mFavoriteNeighbours;
+
     private MutableLiveData<Neighbour> mSpecificNeighbour = new MutableLiveData<>();
     public LiveData<Neighbour> specificNeighbour = mSpecificNeighbour;
 
     private NeighboursRepository mRepo;
+
+
 
     public void init(){
         mRepo = NeighboursRepository.getInstance();
@@ -30,13 +35,13 @@ public class NeighboursViewModel extends ViewModel {
         mNeighbours.setValue(mRepo.getNeighbours());
     }
 
-    public void getSpecificNeighbour(int id){
-
-        mSpecificNeighbour.setValue(mRepo.getSpecificNeighbour(id));
-
-    }
-
     public void deleteNeighbour(Neighbour neighbour){
         mRepo.deleteNeighbour(neighbour);
+    }
+
+    public LiveData<List<Neighbour>> getFavoriteNeighbours(List<Integer> ids){
+
+        mFavoriteNeighbours.setValue(mRepo.getFavoriteNeighbours(ids));
+        return mFavoriteNeighbours;
     }
 }

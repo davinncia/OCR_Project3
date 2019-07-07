@@ -37,7 +37,6 @@ public class NeighboursRepository {
         return __neighboursApiService;
     }
 
-    //TODO: Should we use LiveData from here ? before or just in viewmodel ?
     //Retrieving data form service
     public List<Neighbour> getNeighbours(){
         //inject our api service
@@ -45,14 +44,9 @@ public class NeighboursRepository {
         return getNeighboursApiService().getNeighbours();
     }
 
-    //Retrieving a neighbour from its id
-    public Neighbour getSpecificNeighbour(int id){
-        //inject our api service
-        return getNeighboursApiService().getSpecificNeighbour(id);
-    }
-
     public void deleteNeighbour(Neighbour neighbour){
         getNeighboursApiService().deleteNeighbour(neighbour);
+        //TODO: remove also from pref
     }
 
 
