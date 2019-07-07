@@ -1,9 +1,12 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.neighbour_list;
 
+import android.content.Context;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
@@ -11,6 +14,7 @@ import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.data.service.NeighbourApiService;
 import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
+import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
 import com.davincia.lucasmahe.entrevoisins_pj3.ui.ListNeighbourActivity;
 import com.davincia.lucasmahe.entrevoisins_pj3.ui.NeighbourDetailActivity;
 import com.davincia.lucasmahe.entrevoisins_pj3.utlis.DeleteViewAction;
@@ -34,6 +38,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.davincia.lucasmahe.entrevoisins_pj3.utlis.RecyclerViewItemCountAssertion.withItemCount;
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
@@ -47,7 +52,7 @@ public class NeighboursListTest {
 
     private ListNeighbourActivity mActivity;
 
-    private NeighbourApiService service;
+    private NeighboursRepository repository;
 
     @Rule
     public ActivityTestRule<ListNeighbourActivity> mActivityRule =
@@ -58,7 +63,7 @@ public class NeighboursListTest {
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
 
-        service = DI.getNewInstanceApiService();
+        repository = NeighboursRepository.getInstance();
     }
 
     /**
@@ -76,7 +81,6 @@ public class NeighboursListTest {
      */
     @Test
     public void myNeighboursList_deleteAction_shouldRemoveItem() {
-        //Same ERROR AmbiguousViewMatcherException...
         // Given : We remove the element at position 2
         onView(withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT));
         // When perform a click on a delete icon
@@ -118,6 +122,14 @@ public class NeighboursListTest {
      */
     @Test
     public void myNeighbourList_FavoriteFragment_DisplaysOnlyFavoriteNeighbours(){
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        List<Integer> favorites = repository.getFavoriteIds(context);
+
+        //Perform a click on favorite tab
+        onView(ViewMatchers.withContentDescription(R.string.tab_favorites_title)).perform(click());
+
+        //Make sure number of favorite is the right size
+        onView(withId(R.id.list_favorites)).check(withItemCount(favorites.size()));
 
     }
 }

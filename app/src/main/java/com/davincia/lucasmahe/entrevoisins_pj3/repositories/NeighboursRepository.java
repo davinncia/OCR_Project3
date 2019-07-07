@@ -65,4 +65,8 @@ public class NeighboursRepository {
         mFavoritesPrefs.insertFavorites(ids, context);
     }
 
+    public void removeFromFavorites(int id, Context context){
+        mFavoritesPrefs.removeFromFavorites(id, context);
+    }
+
 }

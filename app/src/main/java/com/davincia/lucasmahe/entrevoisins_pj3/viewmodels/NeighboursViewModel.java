@@ -1,5 +1,7 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.viewmodels;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -17,11 +19,9 @@ public class NeighboursViewModel extends ViewModel {
     private MutableLiveData<List<Neighbour>> mFavoriteNeighbours = new MutableLiveData<>();
     public LiveData<List<Neighbour>> favorites = mFavoriteNeighbours;
 
-    private MutableLiveData<Neighbour> mSpecificNeighbour = new MutableLiveData<>();
-    public LiveData<Neighbour> specificNeighbour = mSpecificNeighbour;
+    private MutableLiveData<List<Integer>> mFavoriteIds = new MutableLiveData<>();
 
     private NeighboursRepository mRepo;
-
 
 
     public void init(){
@@ -30,18 +30,21 @@ public class NeighboursViewModel extends ViewModel {
     }
 
     public void getNeighbours(){
-
         //Set value triggers the observer
         mNeighbours.setValue(mRepo.getNeighbours());
     }
 
     public void deleteNeighbour(Neighbour neighbour){
         mRepo.deleteNeighbour(neighbour);
+
     }
 
     public LiveData<List<Neighbour>> getFavoriteNeighbours(List<Integer> ids){
-
         mFavoriteNeighbours.setValue(mRepo.getFavoriteNeighbours(ids));
         return mFavoriteNeighbours;
+    }
+
+    public void removeFromFavorites (int id, Context context){
+        mRepo.removeFromFavorites(id, context);
     }
 }

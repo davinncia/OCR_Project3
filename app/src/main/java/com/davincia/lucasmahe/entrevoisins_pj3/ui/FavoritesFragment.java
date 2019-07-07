@@ -32,7 +32,6 @@ public class FavoritesFragment extends Fragment {
     private NeighboursRepository mRepo;
 
     private List<Integer> favoriteIds;
-    private List<Neighbour> mNeighbours;
 
     private RecyclerView mRecyclerView;
 
@@ -82,7 +81,6 @@ public class FavoritesFragment extends Fragment {
         super.onResume();
 
         favoriteIds = mRepo.getFavoriteIds(getContext());
-
         refreshData();
     }
 
@@ -111,8 +109,6 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void refreshData(){
-        //Generate the favorite neighbour list
-        mNeighbours = mRepo.getFavoriteNeighbours(favoriteIds);
         //Triggers the observer
         mNeighbourViewModel.getFavoriteNeighbours(favoriteIds);
     }

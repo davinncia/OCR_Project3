@@ -37,6 +37,20 @@ public class AppFavoritesPreferences implements FavoritesSharedPreferences {
 
     }
 
+    @Override
+    public void removeFromFavorites(int id, Context context) {
+        if (sharedPreferences == null) {
+            getFavoritesSharedPref(context);
+        }
+
+        List<Integer> favoriteIds = getFavoriteIds(context);
+        for (int i = 0; i < favoriteIds.size(); i++){
+            if (favoriteIds.get(i) == id){
+                favoriteIds.remove(i);
+            }
+        }
+    }
+
     private void getFavoritesSharedPref(Context context){
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
     }

@@ -9,4 +9,6 @@ public interface FavoritesSharedPreferences {
     List<Integer> getFavoriteIds(Context context);
 
     void insertFavorites(List<Integer> ids, Context context);
+
+    void removeFromFavorites(int id, Context context);
 }

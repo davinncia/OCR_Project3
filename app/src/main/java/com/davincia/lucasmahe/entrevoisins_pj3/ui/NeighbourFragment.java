@@ -1,9 +1,6 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +99,6 @@ public class NeighbourFragment extends Fragment {
 
         //TODO: good way ? necessary to trigger observer...
         mNeighboursViewModel.getNeighbours();
-        //TODO: delete from favorites...
 
 
     }
