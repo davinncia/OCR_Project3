@@ -1,10 +1,13 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
+import android.app.ActivityOptions;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -14,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.events.DeleteNeighbourEvent;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.utils.ItemClickSupport;
+import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
 import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,14 +26,16 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeighbourFragment extends Fragment {
+public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerViewAdapter.OnNeighbourListener {
 
     private RecyclerView mRecyclerView;
     private MyNeighbourRecyclerViewAdapter mAdapter;
 
     private NeighboursViewModel mNeighboursViewModel;
+    private NeighboursRepository mRepo;
 
     private List<Neighbour> mNeighbours;
+    private List<Integer> mFavoritesIds = new ArrayList<>();
 
 
     /**
@@ -47,8 +52,10 @@ public class NeighbourFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mNeighbours = new ArrayList<>();
+        mRepo = NeighboursRepository.getInstance();
 
         mAdapter = new MyNeighbourRecyclerViewAdapter();
+        mAdapter.setOnNeighbourListener(this);
 
         mNeighboursViewModel = ViewModelProviders.of(this).get(NeighboursViewModel.class);
         mNeighboursViewModel.init();
@@ -71,8 +78,6 @@ public class NeighbourFragment extends Fragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-        configureOnClickRecyclerView();
-
         return view;
     }
 
@@ -92,6 +97,7 @@ public class NeighbourFragment extends Fragment {
      * Fired if the user clicks on a delete button
      * @param event
      */
+    //TODO: use a common method with FavoriteFragment ?
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
@@ -100,22 +106,24 @@ public class NeighbourFragment extends Fragment {
         //TODO: good way ? necessary to trigger observer...
         mNeighboursViewModel.getNeighbours();
 
+        //Delete id from favorites and tell favorite fragment
+        mFavoritesIds = mRepo.getFavoriteIds(getContext());
+        //TODO: doesn't actualize favorite fragment...
+        mNeighboursViewModel.getFavoriteNeighbours(mFavoritesIds);
 
     }
 
     /**
      * Handles click on recyclerView's items
      */
-   private void configureOnClickRecyclerView(){
-       ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_item)
-               .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                   @Override
-                   public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                       Neighbour neighbour = mAdapter.getNeighbour(position);
-                       //Start detail activity
-                       startActivity(NeighbourDetailActivity.navigate(getContext(), neighbour));
-                   }
-               });
-   }
-
+    @Override
+    public void onNeighbourClick(int position, ImageView avatar) {
+        Neighbour neighbour = mAdapter.getNeighbour(position);
+        //Shared element transition
+        //TODO: a bit slow...
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
+                getActivity(), avatar, ViewCompat.getTransitionName(avatar)).toBundle();
+        //Start detail activity
+        startActivity(NeighbourDetailActivity.navigate(getContext(), neighbour), bundle);
+    }
 }

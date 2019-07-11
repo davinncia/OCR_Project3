@@ -1,6 +1,8 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
 
     private List<Neighbour> mNeighbours;
 
+    private OnNeighbourListener listener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -76,6 +79,23 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+
+            //TODO: Good practice ?
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onNeighbourClick(getAdapterPosition(), mNeighbourAvatar);
+                }
+            });
         }
+
+    }
+
+    public interface OnNeighbourListener{
+        void onNeighbourClick(int position, ImageView avatar);
+    }
+
+    public void setOnNeighbourListener(OnNeighbourListener listener){
+        this.listener = listener;
     }
 }

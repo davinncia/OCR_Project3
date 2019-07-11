@@ -19,6 +19,14 @@ public class Neighbour implements Parcelable {
     /** Avatar */
     private String avatarUrl;
 
+    private String address;
+
+    private String phone;
+
+    private String mail;
+
+    private String description;
+
 
     /**
      * Constructor
@@ -26,10 +34,14 @@ public class Neighbour implements Parcelable {
      * @param name
      * @param avatarUrl
      */
-    public Neighbour(Integer id, String name, String avatarUrl) {
+    public Neighbour(Integer id, String name, String avatarUrl, String address, String phone, String mail, String description) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
+        this.address = address;
+        this.phone = phone;
+        this.mail = mail;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -44,30 +56,26 @@ public class Neighbour implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAvatarUrl() {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public String getAddress() {
+        return address;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Neighbour neighbour = (Neighbour) o;
-        return Objects.equals(id, neighbour.id);
+    public String getPhone() {
+        return phone;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public String getMail() {
+        return mail;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
 
     @Override
     public int describeContents() {
@@ -79,15 +87,23 @@ public class Neighbour implements Parcelable {
         dest.writeValue(this.id);
         dest.writeString(this.name);
         dest.writeString(this.avatarUrl);
+        dest.writeString(this.address);
+        dest.writeString(this.phone);
+        dest.writeString(this.mail);
+        dest.writeString(this.description);
     }
 
     protected Neighbour(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
         this.avatarUrl = in.readString();
+        this.address = in.readString();
+        this.phone = in.readString();
+        this.mail = in.readString();
+        this.description = in.readString();
     }
 
-    public static final Parcelable.Creator<Neighbour> CREATOR = new Parcelable.Creator<Neighbour>() {
+    public static final Creator<Neighbour> CREATOR = new Creator<Neighbour>() {
         @Override
         public Neighbour createFromParcel(Parcel source) {
             return new Neighbour(source);

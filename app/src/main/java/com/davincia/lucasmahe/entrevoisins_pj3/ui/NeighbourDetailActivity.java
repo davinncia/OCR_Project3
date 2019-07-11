@@ -1,5 +1,6 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.bumptech.glide.Glide;
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
@@ -25,6 +27,8 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
     private static final String INTENT_ID = "INTENT_ID";
     public static final String KEY_NEIGHBOUR = "KEY_NEIGHBOUR";
+
+    private ImageView avatarView;
 
     private NeighboursRepository mRepo;
 
@@ -75,7 +79,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
     ////////////////UI//////////////////
     ////////////////////////////////////
     private void initUi(){
-        ImageView avatarView = findViewById(R.id.toolbarImage);
+        avatarView = findViewById(R.id.toolbarImage);
         TextView nameView = findViewById(R.id.textView_detail_name);
         TextView addressView = findViewById(R.id.textView_detail_address);
         TextView phoneView = findViewById(R.id.textView_detail_phone);
@@ -88,14 +92,17 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             mFavoriteFab.setImageResource(R.drawable.ic_star_empty);
         }
 
+        String address = mNeighbour.getAddress();
+        Toast.makeText(this, address, Toast.LENGTH_SHORT).show();
+
         titleView.setText(mNeighbour.getName());
         titleView.setTextColor(Color.WHITE);
         nameView.setText(mNeighbour.getName());
         Glide.with(this).load(mNeighbour.getAvatarUrl()).into(avatarView);
-        addressView.setText("Here the personal address");
-        phoneView.setText("00.00.00.00.00.00");
-        networkView.setText("Here social network infos");
-        descriptionView.setText("Personal description");
+        addressView.setText(address);
+        phoneView.setText(mNeighbour.getPhone());
+        networkView.setText(mNeighbour.getMail());
+        descriptionView.setText(mNeighbour.getDescription());
     }
 
     ////////////////////////////////////

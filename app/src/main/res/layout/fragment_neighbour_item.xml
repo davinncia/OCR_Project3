@@ -9,6 +9,7 @@
 
     <ImageView
         android:id="@+id/item_list_avatar"
+        android:transitionName="@string/profile_picture_transition"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
