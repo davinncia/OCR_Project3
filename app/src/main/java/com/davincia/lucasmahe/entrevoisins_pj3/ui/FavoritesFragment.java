@@ -19,20 +19,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
-import com.davincia.lucasmahe.entrevoisins_pj3.utils.ItemClickSupport;
+import com.davincia.lucasmahe.entrevoisins_pj3.ui.MyNeighbourRecyclerViewAdapter.OnNeighbourListener;
 import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
 
 import java.util.List;
 
 
-public class FavoritesFragment extends Fragment {
+public class FavoritesFragment extends Fragment implements OnNeighbourListener {
 
 
     private NeighboursViewModel mNeighbourViewModel;
-    private NeighboursRepository mRepo;
-
-    private List<Integer> favoriteIds;
 
     private RecyclerView mRecyclerView;
 
@@ -50,29 +46,24 @@ public class FavoritesFragment extends Fragment {
         return fragment;
     }
 
-    //TODO: when neighbour deleted in main, should be updated
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRepo = NeighboursRepository.getInstance();
-
         mAdapter = new MyNeighbourRecyclerViewAdapter();
+        mAdapter.setOnNeighbourListener(this);
 
-        favoriteIds = mRepo.getFavoriteIds(getContext());
 
         //Listen view model
         mNeighbourViewModel = ViewModelProviders.of(this).get(NeighboursViewModel.class);
 
         mNeighbourViewModel.init();
 
-        mNeighbourViewModel.getFavoriteNeighbours(favoriteIds).observe(this, new Observer<List<Neighbour>>() {
+        mNeighbourViewModel.favorites.observe(this, new Observer<List<Neighbour>>() {
             @Override
             public void onChanged(List<Neighbour> neighbours) {
                 Log.d("debuglog", "changed");
                 mAdapter.setData(neighbours);
-
             }
         });
     }
@@ -81,8 +72,8 @@ public class FavoritesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        favoriteIds = mRepo.getFavoriteIds(getContext());
-        refreshData();
+        mNeighbourViewModel.refreshFavoriteNeighbours();
+
     }
 
     @Override
@@ -95,7 +86,6 @@ public class FavoritesFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
-        configureOnClickRecyclerView();
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -108,24 +98,15 @@ public class FavoritesFragment extends Fragment {
 
     }
 
-    private void refreshData(){
-        //Triggers the observer
-        mNeighbourViewModel.getFavoriteNeighbours(favoriteIds);
-    }
-
     /**
      * Handles click on recyclerView's items
      */
-    private void configureOnClickRecyclerView(){
-        ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_item)
-                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+    @Override
+    public void onNeighbourClick(int position, ImageView avatar) {
 
-                        //Start detail activity
-                        Neighbour neighbour = mAdapter.getNeighbour(position);
-                        startActivity(NeighbourDetailActivity.navigate(getContext(), neighbour));
-                    }
-                });
+        //Start detail activity
+        Neighbour neighbour = mAdapter.getNeighbour(position);
+        startActivity(NeighbourDetailActivity.navigate(getContext(), neighbour));
+
     }
 }

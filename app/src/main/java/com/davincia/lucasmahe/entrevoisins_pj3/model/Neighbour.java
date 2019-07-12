@@ -3,8 +3,6 @@ package com.davincia.lucasmahe.entrevoisins_pj3.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Objects;
-
 /**
  * Model object representing a Neighbour
  */
@@ -27,14 +25,17 @@ public class Neighbour implements Parcelable {
 
     private String description;
 
+    private boolean isFavorite;
+
 
     /**
      * Constructor
      * @param id
      * @param name
      * @param avatarUrl
+     * @param isFavorite
      */
-    public Neighbour(Integer id, String name, String avatarUrl, String address, String phone, String mail, String description) {
+    public Neighbour(Integer id, String name, String avatarUrl, String address, String phone, String mail, String description, boolean isFavorite) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
@@ -42,6 +43,7 @@ public class Neighbour implements Parcelable {
         this.phone = phone;
         this.mail = mail;
         this.description = description;
+        this.isFavorite = isFavorite;
     }
 
     public Integer getId() {
@@ -76,6 +78,14 @@ public class Neighbour implements Parcelable {
         return description;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
 
     @Override
     public int describeContents() {
@@ -91,6 +101,7 @@ public class Neighbour implements Parcelable {
         dest.writeString(this.phone);
         dest.writeString(this.mail);
         dest.writeString(this.description);
+        dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
     }
 
     protected Neighbour(Parcel in) {
@@ -101,9 +112,10 @@ public class Neighbour implements Parcelable {
         this.phone = in.readString();
         this.mail = in.readString();
         this.description = in.readString();
+        this.isFavorite = in.readByte() != 0;
     }
 
-    public static final Creator<Neighbour> CREATOR = new Creator<Neighbour>() {
+    public static final Parcelable.Creator<Neighbour> CREATOR = new Parcelable.Creator<Neighbour>() {
         @Override
         public Neighbour createFromParcel(Parcel source) {
             return new Neighbour(source);

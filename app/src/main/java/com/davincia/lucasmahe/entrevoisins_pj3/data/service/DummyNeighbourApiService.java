@@ -1,10 +1,13 @@
 package com.davincia.lucasmahe.entrevoisins_pj3.data.service;
 
-import androidx.annotation.NonNull;
+import android.util.Log;
+
+
 
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,9 +38,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     /**
      * {@inheritDoc}
      */
-
     @Override
-    @NonNull
     public Neighbour getSpecificNeighbour(int id) {
 
         //Look for the position of the neighbour in list with id
@@ -49,23 +50,17 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
         throw new IllegalStateException("Incoherent state, no user found for id: " + id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public List<Neighbour> getFavoriteNeighbours(List<Integer> ids) {
-        List<Neighbour> favorites = new ArrayList<>();
+    public void setToFavorite(Neighbour neighbour, boolean isFavorite) {
 
-        //We select the ids which are favorite
-        for (int i = 0; i < neighbours.size(); i++) { //could also have used if neighbours.contains()...
+        //Look for the position of the neighbour in list with id
+        for (int i = 0; i < neighbours.size(); i++){
+            if (neighbour.getId().equals(neighbours.get(i).getId())){
+                neighbours.get(i).setFavorite(isFavorite);
 
-            for (int id : ids) {
-                if (neighbours.get(i).getId().equals(id)) {
-                    favorites.add(neighbours.get(i));
-                }
+                Log.d("debuglog", "setToFavorite: " + Arrays.toString(neighbours.toArray()));
             }
         }
-        return favorites;
     }
 }
 

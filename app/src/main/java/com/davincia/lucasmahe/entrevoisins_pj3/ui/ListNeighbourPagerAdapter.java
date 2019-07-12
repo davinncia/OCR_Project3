@@ -3,13 +3,16 @@ package com.davincia.lucasmahe.entrevoisins_pj3.ui;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
+public class ListNeighbourPagerAdapter extends FragmentStatePagerAdapter {
 
     private final int PAGE_NUMBER = 2;
 
     public ListNeighbourPagerAdapter(FragmentManager fm) {
-        super(fm);
+
+        super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
     }
 
     /**

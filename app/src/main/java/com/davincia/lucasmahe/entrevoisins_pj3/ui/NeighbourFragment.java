@@ -18,6 +18,7 @@ import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.events.DeleteNeighbourEvent;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
+import com.davincia.lucasmahe.entrevoisins_pj3.ui.MyNeighbourRecyclerViewAdapter.OnNeighbourListener;
 import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,16 +27,14 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerViewAdapter.OnNeighbourListener {
+public class NeighbourFragment extends Fragment implements OnNeighbourListener {
 
     private RecyclerView mRecyclerView;
     private MyNeighbourRecyclerViewAdapter mAdapter;
 
     private NeighboursViewModel mNeighboursViewModel;
-    private NeighboursRepository mRepo;
 
     private List<Neighbour> mNeighbours;
-    private List<Integer> mFavoritesIds = new ArrayList<>();
 
 
     /**
@@ -52,7 +51,6 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
         super.onCreate(savedInstanceState);
 
         mNeighbours = new ArrayList<>();
-        mRepo = NeighboursRepository.getInstance();
 
         mAdapter = new MyNeighbourRecyclerViewAdapter();
         mAdapter.setOnNeighbourListener(this);
@@ -75,7 +73,6 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -97,19 +94,10 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
      * Fired if the user clicks on a delete button
      * @param event
      */
-    //TODO: use a common method with FavoriteFragment ?
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
         mNeighboursViewModel.deleteNeighbour(event.neighbour);
-
-        //TODO: good way ? necessary to trigger observer...
-        mNeighboursViewModel.getNeighbours();
-
-        //Delete id from favorites and tell favorite fragment
-        mFavoritesIds = mRepo.getFavoriteIds(getContext());
-        //TODO: doesn't actualize favorite fragment...
-        mNeighboursViewModel.getFavoriteNeighbours(mFavoritesIds);
 
     }
 
@@ -120,7 +108,6 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
     public void onNeighbourClick(int position, ImageView avatar) {
         Neighbour neighbour = mAdapter.getNeighbour(position);
         //Shared element transition
-        //TODO: a bit slow...
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
                 getActivity(), avatar, ViewCompat.getTransitionName(avatar)).toBundle();
         //Start detail activity

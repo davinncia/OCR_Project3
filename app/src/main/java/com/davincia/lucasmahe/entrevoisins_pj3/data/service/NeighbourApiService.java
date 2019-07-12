@@ -28,8 +28,9 @@ public interface NeighbourApiService {
     Neighbour getSpecificNeighbour(int id);
 
     /**
-     * Get the list of favorites neighbours given their ids
-     * @param ids
+     * Tell if neighbour is favorite or not
+     * @param neighbour
+     * @param isFavorite
      */
-    List<Neighbour> getFavoriteNeighbours(List<Integer> ids);
+    void setToFavorite(Neighbour neighbour, boolean isFavorite);
 }
