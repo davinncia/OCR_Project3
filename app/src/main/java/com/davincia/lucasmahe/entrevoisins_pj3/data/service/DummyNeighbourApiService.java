@@ -58,7 +58,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
             if (neighbour.getId().equals(neighbours.get(i).getId())){
                 neighbours.get(i).setFavorite(isFavorite);
 
-                Log.d("debuglog", "setToFavorite: " + Arrays.toString(neighbours.toArray()));
+                //Log.d("debuglog", "setToFavorite: " + Arrays.toString(neighbours.toArray()));
             }
         }
     }

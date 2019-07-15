@@ -33,7 +33,6 @@ public class NeighbourServiceTest {
         service = DI.getNewInstanceApiService();
     }
 
-    //TODO: why not using Repository like in Pj 2 ?
     @Test
     public void getNeighboursWithSuccess() {
         List<Neighbour> neighbours = service.getNeighbours();
@@ -58,16 +57,15 @@ public class NeighbourServiceTest {
     }
 
     @Test
-    public void getFavoritesNeighboursWithIds(){
-        //Creating false favorite ids (can't access SharedPreferences here)
-        List<Integer> ids = new ArrayList<>();
-        ids.add(1);
-        ids.add(3);
-
-        List<Neighbour> favorites = service.getFavoriteNeighbours(ids);
-
-        assertEquals("Caroline", favorites.get(0).getName());
-        assertEquals(ids.size(), favorites.size());
+    public void addNeighbourToFavorites(){
+        //GIVEN
+        List<Neighbour> neighbours = service.getNeighbours();
+        //WHEN
+        service.setToFavorite(neighbours.get(0), true);
+        //THEN
+        assertTrue(neighbours.get(0).isFavorite());
+        assertFalse(neighbours.get(1).isFavorite());
     }
+
 }
 
