@@ -59,7 +59,7 @@ public class FavoritesFragment extends Fragment implements OnNeighbourListener {
 
         mNeighbourViewModel.init();
 
-        mNeighbourViewModel.favorites.observe(this, new Observer<List<Neighbour>>() {
+        mNeighbourViewModel.getFavoritesNeighbours.observe(this, new Observer<List<Neighbour>>() {
             @Override
             public void onChanged(List<Neighbour> neighbours) {
                 Log.d("debuglog", "changed");
@@ -72,7 +72,8 @@ public class FavoritesFragment extends Fragment implements OnNeighbourListener {
     public void onResume() {
         super.onResume();
 
-        mNeighbourViewModel.refreshFavoriteNeighbours();
+        //have to refresh to trigger observer
+        mNeighbourViewModel.refreshNeighbour();
 
     }
 

@@ -1,13 +1,8 @@
-package com.davincia.lucasmahe.entrevoisins_pj3.data.service;
-
-import android.util.Log;
-
+package com.davincia.lucasmahe.entrevoisins_pj3.service;
 
 
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

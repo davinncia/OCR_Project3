@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davincia.lucasmahe.entrevoisins_pj3.R;
 import com.davincia.lucasmahe.entrevoisins_pj3.events.DeleteNeighbourEvent;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
 import com.davincia.lucasmahe.entrevoisins_pj3.ui.MyNeighbourRecyclerViewAdapter.OnNeighbourListener;
 import com.davincia.lucasmahe.entrevoisins_pj3.viewmodels.NeighboursViewModel;
 

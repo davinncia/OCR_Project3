@@ -1,4 +1,4 @@
-package com.davincia.lucasmahe.entrevoisins_pj3.data.service;
+package com.davincia.lucasmahe.entrevoisins_pj3.service;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 
@@ -28,7 +28,7 @@ public interface NeighbourApiService {
     Neighbour getSpecificNeighbour(int id);
 
     /**
-     * Tell if neighbour is favorite or not
+     * Set neighbour to favorite or not
      * @param neighbour
      * @param isFavorite
      */

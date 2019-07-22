@@ -5,9 +5,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
 import com.davincia.lucasmahe.entrevoisins_pj3.repositories.NeighboursRepository;
-import com.davincia.lucasmahe.entrevoisins_pj3.ui.FavoritesFragment;
 import com.davincia.lucasmahe.entrevoisins_pj3.ui.ListNeighbourActivity;
 import com.davincia.lucasmahe.entrevoisins_pj3.utlis.DeleteViewAction;
 
@@ -15,9 +13,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -96,19 +91,6 @@ public class NeighboursListTest {
      */
     @Test
     public void myNeighbourList_FavoriteFragment_DisplaysOnlyFavoriteNeighbours(){
-
-        ////Perform a click on favorite tab
-        //onView(ViewMatchers.withContentDescription(R.string.tab_favorites_title)).perform(click());
-
-        ////Make sure number of favorite is the right size
-        //onView(withId(R.id.list_favorites)).check(withItemCount(favorites.size()));
-
-        //////////////
-
-        //List<Neighbour> neighbours = new ArrayList<>();
-        //neighbours.add(new Neighbour(1, "jacques", null, "4 rue Labarthe", "06 78 89 63 82", "mail@mail.com", "bonjour", true));
-        //neighbours.add(new Neighbour(2, "phil", null, "4 rue Labarthe", "06 78 89 63 82", "mail@mail.com", "bonjour", false));
-
 
         //click on first neighbour (caroline)
         onView(withId(R.id.list_neighbours)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));

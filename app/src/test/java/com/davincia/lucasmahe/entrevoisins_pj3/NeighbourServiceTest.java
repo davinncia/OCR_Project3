@@ -3,8 +3,8 @@ package com.davincia.lucasmahe.entrevoisins_pj3;
 
 import com.davincia.lucasmahe.entrevoisins_pj3.di.DI;
 import com.davincia.lucasmahe.entrevoisins_pj3.model.Neighbour;
-import com.davincia.lucasmahe.entrevoisins_pj3.data.service.DummyNeighbourGenerator;
-import com.davincia.lucasmahe.entrevoisins_pj3.data.service.NeighbourApiService;
+import com.davincia.lucasmahe.entrevoisins_pj3.service.DummyNeighbourGenerator;
+import com.davincia.lucasmahe.entrevoisins_pj3.service.NeighbourApiService;
 
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Before;
@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
